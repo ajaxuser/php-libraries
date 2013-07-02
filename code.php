@@ -128,3 +128,10 @@ class ImageCode {
         return $text;
     }
 }
+
+/** 使用方法
+参数为空则使用默认参数
+$params = array();
+$code = new ImageCode($params);
+$code->show();
+*/

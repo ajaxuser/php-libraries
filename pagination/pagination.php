@@ -6,60 +6,58 @@
  * @version 1.0
  */
 class Pagination {
-	
-	private static $first_page_label = '首页';
-	private static $last_page_label = '末页';
-	private static $prev_page_label = '上一页';
-	private static $next_page_label = '下一页';
-	//最大显示页码个数
-	private static $max_show_page = 8;
-	//第一页
-	private static $first_page;
-	//最后一页
-	private static $last_page;
-	//上一页
-	private static $prev_page;
-	//下一页
-	private static $next_page;
-	//记录总个数
-	private static $total_count;
-	//url地址	
-	private static $base_url;
-	//偏移量
-	private static $offset;
-	//每页显示记录个数
-	private static $per_page;
-	//当前页
-	private static $current_page;
-	
-    private function __construct() {
     
-    }
+    private static $first_page_label = '首页';
+    private static $last_page_label = '末页';
+    private static $prev_page_label = '上一页';
+    private static $next_page_label = '下一页';
+    //最大显示页码个数
+    private static $max_show_page = 8;
+    //第一页
+    private static $first_page;
+    //最后一页
+    private static $last_page;
+    //上一页
+    private static $prev_page;
+    //下一页
+    private static $next_page;
+    //记录总个数
+    private static $total_count;
+    //url地址	
+    private static $base_url;
+    //偏移量
+    private static $offset;
+    //每页显示记录个数
+    private static $per_page;
+    //当前页
+    private static $current_page;
+
+    private function __construct() {}
     
     public static function init($config=array()) {
         self::$total_count = intval($config['total_count']);
-		self::$base_url = $config['base_url'];
-		self::$per_page = intval($config['per_page']);
-		self::$offset = intval($config['offset']);
-		
-		//根据offset计算当前页
-		if (self::$offset) { 
-			self::$current_page = (self::$offset/self::$per_page) + 1;			
-		}else {
-			self::$current_page = 1;
-		}
-		
-		//第一页
-		self::$first_page = 1;
-		//最后一页
-		self::$last_page = ceil(self::$total_count/self::$per_page);
-		//上一页
-		self::$prev_page = self::$current_page - 1;
-		//下一页
-		self::$next_page = self::$current_page + 1;
-        
+        self::$base_url = $config['base_url'];
+        self::$per_page = intval($config['per_page']);
+        self::$offset = intval($config['offset']);
+
+        //根据offset计算当前页
+        if (self::$offset) { 
+            self::$current_page = (self::$offset/self::$per_page) + 1;			
+        }else {
+            self::$current_page = 1;
+        }
+
+        //第一页
+        self::$first_page = 1;
+        //最后一页
+        self::$last_page = ceil(self::$total_count/self::$per_page);
+        //上一页
+        self::$prev_page = self::$current_page - 1;
+        //下一页
+        self::$next_page = self::$current_page + 1;
+
         $cls = __CLASS__;
-        
+
         return new $cls;
     }
     

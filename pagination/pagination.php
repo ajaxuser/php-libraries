@@ -4,16 +4,7 @@
  * @email 666zhen@163.com
  * @desc 分页类
  * @version 1.0
- * @usage
- *  $config = array(
- *		'base_url'=>$base_url,
- *		'total_count'=>$total_count,
- *		'offset'=>$offset,
- *		'per_page'=>$per_page
- *	);
- *	$pagination = Pagination::init($config)->create_links();
  */
-
 class Pagination {
 	
 	private static $first_page_label = '首页';

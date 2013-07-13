@@ -2,6 +2,7 @@
 /**
  * 验证码(基于PHP GD库)，可通过传参数的方式定制验证码。
  * 支持干扰线，干扰点，每个字符都支持旋转
+ * 需要字体文件支持
  * 
  * @author ajaxuser
  * @email  666zhen@163.com
@@ -32,7 +33,7 @@ class Image_Code {
     private $point_num = 500;
     
     //字体文件路径
-    private $font_style = 'arial.ttf';
+    private $font_style = './arial.ttf';
     
     //背景色
     private $back_true_color = array(
@@ -47,6 +48,9 @@ class Image_Code {
     //验证码session名称
     private $sess_code = 'sess_code';
     
+    //单例变量
+    private static $instance;
+    
     /**
      * params包含的参数如下
      * @param width
@@ -60,7 +64,8 @@ class Image_Code {
      * @param letter_y
      * @param sess_code
      */
-    public function __construct($params=array()) {
+    
+    private function __construct($params) {
         if($params['width']) $this->width = intval($params['width']);
         if($params['height']) $this->height = intval($params['height']);
         if($params['font_size']) $this->font_size = intval($params['font_size']);
@@ -76,6 +81,18 @@ class Image_Code {
         //打开session
         $sess_id = session_id();
         if(empty($sess_id)) session_start();
+    }
+    
+    private function __clone(){}
+    
+    //单例方法
+    public static function get_instance($params=array()) {
+        $cls = __CLASS__;
+        if(self::$instance instanceof $cls) {
+            return FALSE;
+        }
+        self::$instance = new $cls($params);
+        return self::$instance;
     }
     
     //生成验证码
@@ -131,7 +148,7 @@ class Image_Code {
 
 /** 使用方法
 参数为空则使用默认参数
-$params = array();
-$code = new Image_Code($params);
-$code->show();
 */
+$params = array();
+Image_Code::get_instance($params)->show();
+

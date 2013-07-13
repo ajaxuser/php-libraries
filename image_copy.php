@@ -162,8 +162,8 @@ class Image_Copy {
             header('Content-Type:image/png');
             imagepng($this->dst_img);        
         }
-
-    } 
+    }
+    
 }
 
 /*

@@ -8,7 +8,7 @@
  * @version 1.0 
  *
  */
-class ImageCode {
+class Image_Code {
     
     //字符字典
     private $letter_dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -132,6 +132,6 @@ class ImageCode {
 /** 使用方法
 参数为空则使用默认参数
 $params = array();
-$code = new ImageCode($params);
+$code = new Image_Code($params);
 $code->show();
 */

@@ -191,17 +191,17 @@ $config = array(
 );
 //小图列表
 $img_list = array(
-    './logo/1.png',
-    './logo/2.png',
-    './logo/3.png',
-    './logo/4.png',
-    './logo/5.png',
-    './logo/6.png',
-    './logo/7.png',
-    './logo/8.png',
-    './logo/9.png',
-    './logo/10.png',
-    './logo/11.png',
+    '../logo/1.png',
+    '../logo/2.png',
+    '../logo/3.png',
+    '../logo/4.png',
+    '../logo/5.png',
+    '../logo/6.png',
+    '../logo/7.png',
+    '../logo/8.png',
+    '../logo/9.png',
+    '../logo/10.png',
+    '../logo/11.png',
     
 );
 Image_Copy::get_instance($config)->generate($img_list);

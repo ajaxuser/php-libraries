@@ -8,9 +8,6 @@ class Image_Copy {
     //背景图片的高度
     private $bg_h = 0;
     
-    //背景图片
-    private $bg_img = NULL;
-    
     //背景色
     private $bg_color = array(
         'red'=>255,
@@ -50,7 +47,7 @@ class Image_Copy {
         //新建一个真彩色图像，返回一个图像标识符
         $bg_img = imagecreatetruecolor($this->bg_w, $this->bg_h);
         //分配颜色
-        $bg_color = imagecolorallocate($this->bg_img, $this->bg_color['red'], $this->bg_color['green'], $this->bg_color['blue']);
+        $bg_color = imagecolorallocate($bg_img, $this->bg_color['red'], $this->bg_color['green'], $this->bg_color['blue']);
         //画一个矩形并填充
         imagefilledrectangle($bg_img, 0, 0, $this->bg_w, $this->bg_h, $bg_color);
         //设置透明

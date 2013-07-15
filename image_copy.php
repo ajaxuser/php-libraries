@@ -58,6 +58,7 @@ class Image_Copy {
     //获取每个图片的大小
     protected function set_img_data($img_list) {
         $img_count = 1;
+        $first_w = 0;
         $first_h = 0;
         $other_h = 0;
         $other_w = 0;
@@ -80,6 +81,7 @@ class Image_Copy {
             //计算总的宽度和高度
             if($img_count === 1) {
                 //第一张图
+                $first_w = $w;
                 $first_h = $h;
             } elseif($img_count === 2) {
                 //其他的图都相同
@@ -134,7 +136,11 @@ class Image_Copy {
             }
             $img_count++;
         }
+        
         $this->bg_w = intval($other_w * $this->line_num);
+        if($first_w > $this->bg_w) {
+            $this->bg_w = $first_w;
+        }
         $this->bg_h = intval($other_lines * $other_h + $first_h);
     }
     
@@ -152,52 +158,37 @@ class Image_Copy {
         $this->set_img_data($img_list);
         $this->background();
         //合并图片
+        $func = 'imagecreatefrom'.$this->type;
+        if(!function_exists($func)) {
+            die('function '.$func.' not exists.');
+        }
         foreach($this->img_data as $item) {
-            $img = imagecreatefrompng($item['img']);
+            $img = $func($item['img']);
             imagecopy($this->dst_img, $img, $item['x'], $item['y'], 0, 0, $item['w'], $item['h']);
         }
+        //输出
+        $func = 'image'.$this->type;
+        if(!function_exists($func)) {
+            die('function '.$func.' not exists.');
+        }
         if($this->output) {
-            switch($this->type) {
-                case 'jpg':
-                case 'jpeg':
-                    imagejpeg($this->dst_img, $this->output);
-                    break;
-                case 'gif':
-                    imagegif($this->dst_img, $this->output);
-                    break;
-                default:
-                    imagepng($this->dst_img, $this->output);
-            }
-            
+            $func($this->dst_img, $this->output);
         } else {
-            switch($this->type) {
-                case 'jpg':
-                case 'jpeg':
-                    header('Content-Type:image/jpeg');
-                    imagejpeg($this->dst_img);
-                    break;
-                case 'gif':
-                    header('Content-Type:image/gif');
-                    imagegif($this->dst_img);
-                    break;
-                default:
-                    header('Content-Type:image/png');
-                    imagepng($this->dst_img);
-            }   
+            header('Content-Type:image/'.$this->type);
+            $func($this->dst_img);
         }
     }
     
 }
 
-
 /*********************** 使用方法 ***************************/
 /*
 $config = array(
     //输出文件需要定义，输出到浏览器不需要定义
-    //'output'=>'./file.png',
+    //'output'=>'./file.jpg',
+    //type选项: png gif jpeg
     'type'=>'png',
 );
-
 //小图列表
 $img_list = array(
     './logo/1.png',
@@ -211,8 +202,8 @@ $img_list = array(
     './logo/9.png',
     './logo/10.png',
     './logo/11.png',
+    
 );
-
 Image_Copy::get_instance($config)->generate($img_list);
 */
 

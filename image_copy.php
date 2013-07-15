@@ -1,6 +1,5 @@
 <?php
-//图片合并类，适用于除了第一张图片之外，其他所有图片均相同的情况
-//如处理其他情况，可继承此类并进行修改
+//图片合并类，适用于首页的品牌墙，自动计算坐标，只需要传入图片路径即可
 class Image_Copy {
     
     //背景图片的宽度
@@ -25,6 +24,9 @@ class Image_Copy {
     //输出到目录或者浏览器
     private $output;
     
+    //图片类型
+    private $type = 'png';
+    
     //目标图标识
     private $dst_img;
     
@@ -38,6 +40,7 @@ class Image_Copy {
         //设置每行显示几个
         if($config['line_num']) $this->line_num = intval($config['line_num']);
         if($config['output']) $this->output = $config['output'];
+        if($config['type']) $this->type = $config['type'];
     }
     
     private function __clone() {}
@@ -157,19 +160,45 @@ class Image_Copy {
             imagecopy($this->dst_img, $img, $item['x'], $item['y'], 0, 0, $item['w'], $item['h']);
         }
         if($this->output) {
-            imagepng($this->dst_img, $this->output);
+            switch($this->type) {
+                case 'jpg':
+                case 'jpeg':
+                    imagejpeg($this->dst_img, $this->output);
+                    break;
+                case 'gif':
+                    imagegif($this->dst_img, $this->output);
+                    break;
+                default:
+                    imagepng($this->dst_img, $this->output);
+            }
+            
         } else {
-            header('Content-Type:image/png');
-            imagepng($this->dst_img);        
+            switch($this->type) {
+                case 'jpg':
+                case 'jpeg':
+                    header('Content-Type:image/jpeg');
+                    imagejpeg($this->dst_img);
+                    break;
+                case 'gif':
+                    header('Content-Type:image/gif');
+                    imagegif($this->dst_img);
+                    break;
+                default:
+                    header('Content-Type:image/png');
+                    imagepng($this->dst_img);
+            }   
         }
     }
     
 }
 
+
+/*********************** 使用方法 ***************************/
 /*
 $config = array(
-    //输出文件
-    'output'=>'./file.png'
+    //输出文件需要定义，输出到浏览器不需要定义
+    //'output'=>'./file.png',
+    'type'=>'png',
 );
 
 //小图列表
